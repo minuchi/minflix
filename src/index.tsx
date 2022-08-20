@@ -1,18 +1,44 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider } from 'styled-components';
+import { RecoilRoot } from 'recoil';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import reset from 'styled-reset';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { theme } from './theme';
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+  body {
+    background: black;
+    height: 200vh;
+    position: relative;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+`;
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <App />
+        </ThemeProvider>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </RecoilRoot>
   </React.StrictMode>,
 );
 

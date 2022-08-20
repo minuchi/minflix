@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -24,7 +24,7 @@ const Logo = styled(motion.svg)`
   width: 120px;
   margin-right: 20px;
   cursor: pointer;
-  fill: ${(props) => props.theme.redColor};
+  fill: ${(props) => props.theme.red};
 `;
 
 const Items = styled.ul`
@@ -47,13 +47,13 @@ const Circle = styled(motion.div)`
   width: 5px;
   height: 5px;
   border-radius: 3px;
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.white.light};
 `;
 
 const PageLink = styled(NavLink)`
   position: relative;
   text-align: center;
-  color: #e5e5e5;
+  color: ${(props) => props.theme.white.default};
   text-decoration: none;
   outline: none;
   transition: color 0.4s ease;
@@ -62,18 +62,13 @@ const PageLink = styled(NavLink)`
   margin-bottom: 5px;
 
   &.active {
-    color: #ffffff;
+    color: ${(props) => props.theme.white.light};
   }
 
   &:hover,
   &:active {
-    color: #b3b3b3;
+    color: ${(props) => props.theme.white.dark};
   }
-`;
-
-const HeightFixer = styled.div`
-  width: 100%;
-  height: 70px;
 `;
 
 const logoVariants: Variants = {
@@ -91,9 +86,9 @@ const logoVariants: Variants = {
 const SearchBar = styled(motion.input)`
   height: 36px;
   background-color: transparent;
-  border: 1px solid #ffffff;
+  border: 1px solid ${(props) => props.theme.white.light};
   width: 210px;
-  color: #ffffff;
+  color: ${(props) => props.theme.white.light};
   padding: 0 10px 0 40px;
   transform-origin: right;
   position: absolute;
@@ -111,7 +106,7 @@ const SearchButton = styled(motion.button)`
 const SearchIcon = styled(motion.svg)`
   width: 20px;
   height: 20px;
-  fill: #ffffff;
+  fill: ${(props) => props.theme.white.light};
 `;
 
 function Header() {
@@ -124,10 +119,6 @@ function Header() {
 
   const [searchOpen, setSearchOpen] = useState(false);
   const toggleSearch = () => setSearchOpen((prev) => !prev);
-
-  useEffect(() => {
-    scrollY.onChange((x) => console.log(x));
-  }, [scrollY]);
 
   return (
     <>
@@ -191,7 +182,6 @@ function Header() {
           </Items>
         </Menu>
       </Nav>
-      <HeightFixer />
     </>
   );
 }
