@@ -54,8 +54,6 @@ const PageLink = styled(NavLink)`
   position: relative;
   text-align: center;
   color: ${(props) => props.theme.white.default};
-  text-decoration: none;
-  outline: none;
   transition: color 0.4s ease;
   font-weight: 700;
   font-size: 14px;

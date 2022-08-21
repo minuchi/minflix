@@ -13,13 +13,18 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
   body {
     background: black;
-    height: 200vh;
+    min-height: 100vh;
     position: relative;
     font-family: 'Noto Sans KR', sans-serif;
   }
 
   * {
     box-sizing: border-box;
+  }
+
+  a {
+    text-decoration: none;
+    outline: none;
   }
 `;
 

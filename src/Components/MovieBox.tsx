@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { motion, Variants } from 'framer-motion';
 import { makeImgUrl } from '../utils';
+import { Link } from 'react-router-dom';
 
 interface MovieBoxProps {
   id: number;
@@ -15,6 +16,28 @@ const Box = styled(motion.li)`
   &:last-child {
     transform-origin: center right;
   }
+`;
+
+const Img = styled.img`
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+`;
+
+const Info = styled(motion.div)`
+  position: relative;
+  top: -5px;
+  background-color: #141414;
+  opacity: 0;
+`;
+
+const Title = styled.h4`
+  font-size: 18px;
+  padding: 15px 5px;
+  display: flex;
+  justify-content: center;
+  color: ${(props) => props.theme.white.dark};
 `;
 
 const boxVariants: Variants = {
@@ -46,34 +69,21 @@ const infoVariants: Variants = {
   },
 };
 
-const Img = styled.img`
-  width: 100%;
-  object-fit: cover;
-  object-position: center;
-`;
-
-const Info = styled(motion.div)`
-  position: relative;
-  top: -5px;
-  background-color: #141414;
-  opacity: 0;
-`;
-
-const Title = styled.h4`
-  font-size: 18px;
-  padding: 15px 5px;
-  display: flex;
-  justify-content: center;
-  color: ${(props) => props.theme.white.dark};
-`;
-
 function MovieBox({ id, imageUrl, title }: MovieBoxProps) {
   return (
-    <Box key={id} variants={boxVariants} initial="normal" whileHover="hover">
-      <Img src={makeImgUrl(imageUrl, 'w500')} />
-      <Info variants={infoVariants}>
-        <Title>{title}</Title>
-      </Info>
+    <Box
+      key={id}
+      layoutId={id + ''}
+      variants={boxVariants}
+      initial="normal"
+      whileHover="hover"
+    >
+      <Link to={`/movies/${id}`}>
+        <Img src={makeImgUrl(imageUrl, 'w500')} />
+        <Info variants={infoVariants}>
+          <Title>{title}</Title>
+        </Info>
+      </Link>
     </Box>
   );
 }

@@ -1,8 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
-import { GetMovies, getMovies } from '../api';
+import {
+  GetMovies,
+  getMovies,
+  getTopRatedMovies,
+  getUpcomingMovies,
+} from '../api';
 import { makeImgUrl, summarizeText } from '../utils';
 import MovieSlider from '../Components/MovieSlider';
+import MovieModal from '../Components/MovieModal';
+import { useParams } from 'react-router-dom';
 
 const Banner = styled.div<{ imgUrl: string }>`
   height: 70vh;
@@ -35,15 +42,32 @@ const Overview = styled.p`
 `;
 
 function Home() {
-  const { data, isLoading } = useQuery<GetMovies>(['movies'], getMovies);
+  const { data: movies, isLoading: moviesLoading } = useQuery<GetMovies>(
+    ['movies'],
+    getMovies,
+  );
+  const { data: topRatedMovies, isLoading: topRatedMoviesLoading } =
+    useQuery<GetMovies>(['movies', 'topRated'], getTopRatedMovies);
+  const { data: upcomingMovies, isLoading: upcomingMoviesLoading } =
+    useQuery<GetMovies>(['movies', 'upcoming'], getUpcomingMovies);
+  const params = useParams<{ id: string }>();
 
-  return isLoading || !data ? null : (
+  return (
     <>
-      <Banner imgUrl={makeImgUrl(data.results[0].backdrop_path || '')}>
-        <Title>{data.results[0].title}</Title>
-        <Overview>{summarizeText(data.results[0].overview)}</Overview>
+      <Banner imgUrl={makeImgUrl(movies?.results[0].backdrop_path || '')}>
+        <Title>{movies?.results[0].title}</Title>
+        <Overview>{summarizeText(movies?.results[0].overview || '')}</Overview>
       </Banner>
-      <MovieSlider data={data} />
+      {!moviesLoading && movies && (
+        <MovieSlider title="Latest movies" data={movies} />
+      )}
+      {!topRatedMoviesLoading && topRatedMovies && (
+        <MovieSlider title="Top rated movies" data={topRatedMovies} />
+      )}
+      {!upcomingMoviesLoading && upcomingMovies && (
+        <MovieSlider title="Upcoming movies" data={upcomingMovies} />
+      )}
+      {params.id && <MovieModal id={params.id} />}
     </>
   );
 }
