@@ -8,6 +8,7 @@ import reset from 'styled-reset';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { theme } from './theme';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}

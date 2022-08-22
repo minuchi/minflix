@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
-import { GetMovies } from '../api';
+import { GetMovies, GetTvShows } from '../api';
 import MovieBox from './MovieBox';
 
 const Wrapper = styled.div`
@@ -64,7 +64,7 @@ const HeightFixer = styled.div`
 
 interface MovieSliderProps {
   title: string;
-  data: GetMovies;
+  data: GetMovies | GetTvShows;
 }
 
 function MovieSlider({ title, data }: MovieSliderProps) {
@@ -95,14 +95,13 @@ function MovieSlider({ title, data }: MovieSliderProps) {
             key={page}
           >
             {data.results
-              .slice(1)
               .slice(page * offset, page * offset + offset)
-              .map((movie) => (
+              .map((movie: any) => (
                 <MovieBox
                   key={movie.id}
                   id={title.toLowerCase().replace(/\s/g, '') + '-' + movie.id}
                   imageUrl={movie.backdrop_path || movie.poster_path}
-                  title={movie.title}
+                  title={movie.title || movie.name}
                 />
               ))}
           </Row>

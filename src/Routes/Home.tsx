@@ -59,7 +59,10 @@ function Home() {
         <Overview>{summarizeText(movies?.results[0].overview || '')}</Overview>
       </Banner>
       {!moviesLoading && movies && (
-        <MovieSlider title="Latest movies" data={movies} />
+        <MovieSlider
+          title="Now playing movies"
+          data={{ ...movies, results: movies.results.slice(1) }}
+        />
       )}
       {!topRatedMoviesLoading && topRatedMovies && (
         <MovieSlider title="Top rated movies" data={topRatedMovies} />
@@ -67,7 +70,7 @@ function Home() {
       {!upcomingMoviesLoading && upcomingMovies && (
         <MovieSlider title="Upcoming movies" data={upcomingMovies} />
       )}
-      {params.id && <MovieModal id={params.id} />}
+      {params.id && <MovieModal type="movie" id={params.id} />}
     </>
   );
 }

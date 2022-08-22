@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { motion, Variants } from 'framer-motion';
 import { makeImgUrl } from '../utils';
-import { Link } from 'react-router-dom';
+import { Link, useMatch } from 'react-router-dom';
 
 interface MovieBoxProps {
   id: string;
@@ -70,6 +70,8 @@ const infoVariants: Variants = {
 };
 
 function MovieBox({ id, imageUrl, title }: MovieBoxProps) {
+  const isTv = useMatch('/tv');
+
   return (
     <Box
       key={id}
@@ -78,7 +80,7 @@ function MovieBox({ id, imageUrl, title }: MovieBoxProps) {
       initial="normal"
       whileHover="hover"
     >
-      <Link to={`/movies/${id}`}>
+      <Link to={`/${isTv ? 'tv' : 'movies'}/${id}`}>
         <Img src={makeImgUrl(imageUrl, 'w500')} />
         <Info variants={infoVariants}>
           <Title>{title}</Title>

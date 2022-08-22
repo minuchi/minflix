@@ -2,10 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { GetMovie, getMovie } from '../api';
+import { GetMovie, getMovie, GetTVShow, getTvShow } from '../api';
 import { makeImgUrl } from '../utils';
 
 interface MovieModalProps {
+  type: 'movie' | 'tv';
   id: string;
 }
 
@@ -68,13 +69,22 @@ const Tag = styled.li`
   margin-bottom: 10px;
 `;
 
-function MovieModal({ id }: MovieModalProps) {
-  const { data, isLoading } = useQuery<GetMovie>(['movies', id], () =>
-    getMovie(id.split('-')[1]),
+function MovieModal({ type, id }: MovieModalProps) {
+  const ids = id.split('-');
+
+  const { data, isLoading } = useQuery<GetMovie | GetTVShow>(
+    [type, ids[1]],
+    () => {
+      if (type === 'movie') {
+        return getMovie(ids[1]);
+      } else {
+        return getTvShow(ids[1]);
+      }
+    },
   );
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/', { replace: true });
+    navigate(type === 'movie' ? '/' : '/tv', { replace: true });
   };
   const handleModalClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -95,7 +105,7 @@ function MovieModal({ id }: MovieModalProps) {
           {!isLoading && data && (
             <>
               <Img src={makeImgUrl(data.backdrop_path, 'w500')} />
-              <Title>{data.title}</Title>
+              <Title>{(data as any).title || (data as any).name}</Title>
               <Overview>{data.overview}</Overview>
               <Tags>
                 {data.genres.map(({ name }) => (
