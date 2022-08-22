@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "https://minuchi.github.io/minflix/static/css/main.3d10672c.css",
+    "main.js": "https://minuchi.github.io/minflix/static/js/main.15cc73e8.js",
+    "static/js/787.82787447.chunk.js": "https://minuchi.github.io/minflix/static/js/787.82787447.chunk.js",
+    "index.html": "https://minuchi.github.io/minflix/index.html",
+    "main.3d10672c.css.map": "https://minuchi.github.io/minflix/static/css/main.3d10672c.css.map",
+    "main.15cc73e8.js.map": "https://minuchi.github.io/minflix/static/js/main.15cc73e8.js.map",
+    "787.82787447.chunk.js.map": "https://minuchi.github.io/minflix/static/js/787.82787447.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3d10672c.css",
+    "static/js/main.15cc73e8.js"
+  ]
+}
