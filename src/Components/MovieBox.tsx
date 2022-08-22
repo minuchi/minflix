@@ -4,7 +4,7 @@ import { makeImgUrl } from '../utils';
 import { Link } from 'react-router-dom';
 
 interface MovieBoxProps {
-  id: number;
+  id: string;
   imageUrl: string;
   title: string;
 }

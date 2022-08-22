@@ -100,7 +100,7 @@ function MovieSlider({ title, data }: MovieSliderProps) {
               .map((movie) => (
                 <MovieBox
                   key={movie.id}
-                  id={movie.id}
+                  id={title.toLowerCase().replace(/\s/g, '') + '-' + movie.id}
                   imageUrl={movie.backdrop_path || movie.poster_path}
                   title={movie.title}
                 />

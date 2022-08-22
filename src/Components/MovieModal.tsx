@@ -70,11 +70,17 @@ const Tag = styled.li`
 
 function MovieModal({ id }: MovieModalProps) {
   const { data, isLoading } = useQuery<GetMovie>(['movies', id], () =>
-    getMovie(id),
+    getMovie(id.split('-')[1]),
   );
   const navigate = useNavigate();
   const handleClick = () => {
     navigate('/', { replace: true });
+  };
+  const handleModalClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    // Do not close modal when modal clicked...
+    e.stopPropagation();
   };
 
   return (
@@ -85,7 +91,7 @@ function MovieModal({ id }: MovieModalProps) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        <Modal layoutId={id}>
+        <Modal layoutId={id} onClick={handleModalClick}>
           {!isLoading && data && (
             <>
               <Img src={makeImgUrl(data.backdrop_path, 'w500')} />
@@ -93,7 +99,7 @@ function MovieModal({ id }: MovieModalProps) {
               <Overview>{data.overview}</Overview>
               <Tags>
                 {data.genres.map(({ name }) => (
-                  <Tag>{name}</Tag>
+                  <Tag key={name}>{name}</Tag>
                 ))}
               </Tags>
             </>
