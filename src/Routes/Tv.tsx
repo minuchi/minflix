@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   getAiringTodayTvShows,
@@ -7,10 +8,9 @@ import {
   getTopRatedTvShows,
   GetTvShows,
 } from '../api';
+import Modal from '../Components/Modal';
+import Slider from '../Components/Slider';
 import { makeImgUrl, summarizeText } from '../utils';
-import MovieSlider from '../Components/MovieSlider';
-import MovieModal from '../Components/MovieModal';
-import { useParams } from 'react-router-dom';
 
 const Banner = styled.div<{ imgUrl: string }>`
   height: 70vh;
@@ -64,7 +64,7 @@ function Tv() {
         </Overview>
       </Banner>
       {!onTheAirTvShowsLoading && onTheAirTvShows && (
-        <MovieSlider
+        <Slider
           title="On the air TV shows"
           data={{
             ...onTheAirTvShows,
@@ -74,23 +74,19 @@ function Tv() {
         />
       )}
       {!airingTodayTvShowsLoading && airingTodayTvShows && (
-        <MovieSlider
+        <Slider
           title="Airing today TV shows"
           data={airingTodayTvShows}
           type="tv"
         />
       )}
       {!popularTvShowsLoading && popularTvShows && (
-        <MovieSlider title="Popular TV shows" data={popularTvShows} type="tv" />
+        <Slider title="Popular TV shows" data={popularTvShows} type="tv" />
       )}
       {!topRatedTvShowsLoading && topRatedTvShows && (
-        <MovieSlider
-          title="Top rated TV shows"
-          data={topRatedTvShows}
-          type="tv"
-        />
+        <Slider title="Top rated TV shows" data={topRatedTvShows} type="tv" />
       )}
-      {params.id && <MovieModal type="tv" id={params.id} />}
+      {params.id && <Modal type="tv" id={params.id} />}
     </>
   );
 }

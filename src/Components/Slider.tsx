@@ -1,8 +1,8 @@
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { AnimatePresence, motion, Variants } from 'framer-motion';
 import { GetMovies, GetTvShows } from '../api';
-import MovieBox from './MovieBox';
+import Box from './Box';
 
 const Wrapper = styled.div`
   position: relative;
@@ -17,7 +17,7 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-const Slider = styled.div`
+const Container = styled.div`
   position: relative;
 `;
 
@@ -62,7 +62,7 @@ const HeightFixer = styled.div`
   width: 100%;
 `;
 
-type MovieSliderProps =
+type SliderProps =
   | {
       title: string;
       data: GetMovies;
@@ -74,7 +74,7 @@ type MovieSliderProps =
       type: 'tv';
     };
 
-function MovieSlider({ title, data, type }: MovieSliderProps) {
+function Slider({ title, data, type }: SliderProps) {
   const [page, setPage] = useState(0);
   const [isPaging, setIsPaging] = useState(false);
   const NextPage = () => {
@@ -91,7 +91,7 @@ function MovieSlider({ title, data, type }: MovieSliderProps) {
   return (
     <Wrapper>
       <Title>{title}</Title>
-      <Slider>
+      <Container>
         <AnimatePresence initial={false} onExitComplete={toggleIsPaging}>
           <Row
             variants={rowVariants}
@@ -104,7 +104,7 @@ function MovieSlider({ title, data, type }: MovieSliderProps) {
             {data.results
               .slice(page * offset, page * offset + offset)
               .map((movie: any) => (
-                <MovieBox
+                <Box
                   key={movie.id}
                   id={
                     title.toLowerCase().replace(/(\s|")/g, '') + '-' + movie.id
@@ -127,10 +127,10 @@ function MovieSlider({ title, data, type }: MovieSliderProps) {
             </svg>
           </ChangePageButton>
         </AnimatePresence>
-      </Slider>
+      </Container>
       <HeightFixer />
     </Wrapper>
   );
 }
 
-export default MovieSlider;
+export default Slider;

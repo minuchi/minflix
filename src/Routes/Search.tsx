@@ -7,8 +7,8 @@ import {
   GetTvShows,
   getTvShowsBySearching,
 } from '../api';
-import MovieModal from '../Components/MovieModal';
-import MovieSlider from '../Components/MovieSlider';
+import Modal from '../Components/Modal';
+import Slider from '../Components/Slider';
 
 const HeightFixer = styled.div`
   height: 200px;
@@ -41,20 +41,12 @@ function Search() {
     <>
       <HeightFixer />
       {!moviesLoading && movies && (
-        <MovieSlider
-          title={`"${keyword}" in movies`}
-          data={movies}
-          type="movie"
-        />
+        <Slider title={`"${keyword}" in movies`} data={movies} type="movie" />
       )}
       {!tvShowsLoading && tvShows && (
-        <MovieSlider
-          title={`"${keyword}" in TV shows`}
-          data={tvShows}
-          type="tv"
-        />
+        <Slider title={`"${keyword}" in TV shows`} data={tvShows} type="tv" />
       )}
-      {modalCond && <MovieModal type={type} id={params.id} />}
+      {modalCond && <Modal type={type} id={params.id} />}
     </>
   );
 }

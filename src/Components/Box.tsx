@@ -1,16 +1,16 @@
-import styled from 'styled-components';
 import { motion, Variants } from 'framer-motion';
-import { makeImgUrl } from '../utils';
 import { Link, useMatch, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { makeImgUrl } from '../utils';
 
-interface MovieBoxProps {
+interface BoxProps {
   id: string;
   imageUrl: string;
   title: string;
   type: 'movie' | 'tv';
 }
 
-const Box = styled(motion.li)`
+const BoxContainer = styled(motion.li)`
   &:first-child {
     transform-origin: center left;
   }
@@ -70,7 +70,7 @@ const infoVariants: Variants = {
   },
 };
 
-function MovieBox({ id, imageUrl, title, type }: MovieBoxProps) {
+function Box({ id, imageUrl, title, type }: BoxProps) {
   const isSearch = useMatch('/search');
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get('keyword') || '';
@@ -78,7 +78,7 @@ function MovieBox({ id, imageUrl, title, type }: MovieBoxProps) {
     ? `/search/${id}?keyword=${encodeURIComponent(keyword)}&t=${type}`
     : `/${type === 'movie' ? 'movies' : 'tv'}/${id}`;
   return (
-    <Box
+    <BoxContainer
       key={id}
       layoutId={id + ''}
       variants={boxVariants}
@@ -91,8 +91,8 @@ function MovieBox({ id, imageUrl, title, type }: MovieBoxProps) {
           <Title>{title}</Title>
         </Info>
       </Link>
-    </Box>
+    </BoxContainer>
   );
 }
 
-export default MovieBox;
+export default Box;

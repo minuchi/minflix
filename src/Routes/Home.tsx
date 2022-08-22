@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   GetMovies,
@@ -6,10 +7,9 @@ import {
   getTopRatedMovies,
   getUpcomingMovies,
 } from '../api';
+import Modal from '../Components/Modal';
+import Slider from '../Components/Slider';
 import { makeImgUrl, summarizeText } from '../utils';
-import MovieSlider from '../Components/MovieSlider';
-import MovieModal from '../Components/MovieModal';
-import { useParams } from 'react-router-dom';
 
 const Banner = styled.div<{ imgUrl: string }>`
   height: 70vh;
@@ -59,27 +59,19 @@ function Home() {
         <Overview>{summarizeText(movies?.results[0].overview || '')}</Overview>
       </Banner>
       {!moviesLoading && movies && (
-        <MovieSlider
+        <Slider
           title="Now playing movies"
           data={{ ...movies, results: movies.results.slice(1) }}
           type="movie"
         />
       )}
       {!topRatedMoviesLoading && topRatedMovies && (
-        <MovieSlider
-          title="Top rated movies"
-          data={topRatedMovies}
-          type="movie"
-        />
+        <Slider title="Top rated movies" data={topRatedMovies} type="movie" />
       )}
       {!upcomingMoviesLoading && upcomingMovies && (
-        <MovieSlider
-          title="Upcoming movies"
-          data={upcomingMovies}
-          type="movie"
-        />
+        <Slider title="Upcoming movies" data={upcomingMovies} type="movie" />
       )}
-      {params.id && <MovieModal type="movie" id={params.id} />}
+      {params.id && <Modal type="movie" id={params.id} />}
     </>
   );
 }

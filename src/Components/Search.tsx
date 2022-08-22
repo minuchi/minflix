@@ -69,7 +69,7 @@ function Search() {
 
   useEffect(() => {
     searchOpen && setFocus('keyword');
-  }, [searchOpen]);
+  }, [searchOpen, setFocus]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
 import { useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { GetMovie, getMovie, GetTVShow, getTvShow } from '../api';
 import { makeImgUrl } from '../utils';
 
-interface MovieModalProps {
+interface ModalProps {
   type: 'movie' | 'tv';
   id: string;
 }
@@ -22,7 +21,7 @@ const Overlay = styled(motion.div)`
   justify-content: center;
 `;
 
-const Modal = styled(motion.div)`
+const ModalContainer = styled(motion.div)`
   position: absolute;
   top: 100px;
   background-color: #141414;
@@ -70,7 +69,7 @@ const Tag = styled.li`
   margin-bottom: 10px;
 `;
 
-function MovieModal({ type, id }: MovieModalProps) {
+function Modal({ type, id }: ModalProps) {
   const ids = id.split('-');
 
   const { data, isLoading } = useQuery<GetMovie | GetTVShow>(
@@ -104,10 +103,6 @@ function MovieModal({ type, id }: MovieModalProps) {
     e.stopPropagation();
   };
 
-  useEffect(() => {
-    console.log(isLoading, data);
-  }, [isLoading, data]);
-
   return (
     <AnimatePresence>
       <Overlay
@@ -116,7 +111,7 @@ function MovieModal({ type, id }: MovieModalProps) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        <Modal layoutId={id} onClick={handleModalClick}>
+        <ModalContainer layoutId={id} onClick={handleModalClick}>
           {!isLoading && data && (
             <>
               <Img
@@ -131,10 +126,10 @@ function MovieModal({ type, id }: MovieModalProps) {
               </Tags>
             </>
           )}
-        </Modal>
+        </ModalContainer>
       </Overlay>
     </AnimatePresence>
   );
 }
 
-export default MovieModal;
+export default Modal;
