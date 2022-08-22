@@ -62,13 +62,22 @@ function Home() {
         <MovieSlider
           title="Now playing movies"
           data={{ ...movies, results: movies.results.slice(1) }}
+          type="movie"
         />
       )}
       {!topRatedMoviesLoading && topRatedMovies && (
-        <MovieSlider title="Top rated movies" data={topRatedMovies} />
+        <MovieSlider
+          title="Top rated movies"
+          data={topRatedMovies}
+          type="movie"
+        />
       )}
       {!upcomingMoviesLoading && upcomingMovies && (
-        <MovieSlider title="Upcoming movies" data={upcomingMovies} />
+        <MovieSlider
+          title="Upcoming movies"
+          data={upcomingMovies}
+          type="movie"
+        />
       )}
       {params.id && <MovieModal type="movie" id={params.id} />}
     </>

@@ -2,20 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import {
   getAiringTodayTvShows,
-  GetMovies,
-  getMovies,
   getOnTheAirTvShows,
   getPopularTvShows,
-  getTopRatedMovies,
   getTopRatedTvShows,
   GetTvShows,
-  getUpcomingMovies,
 } from '../api';
 import { makeImgUrl, summarizeText } from '../utils';
 import MovieSlider from '../Components/MovieSlider';
 import MovieModal from '../Components/MovieModal';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
 
 const Banner = styled.div<{ imgUrl: string }>`
   height: 70vh;
@@ -53,9 +48,9 @@ function Tv() {
   const { data: airingTodayTvShows, isLoading: airingTodayTvShowsLoading } =
     useQuery<GetTvShows>(['tvShows', 'airingToday'], getAiringTodayTvShows);
   const { data: popularTvShows, isLoading: popularTvShowsLoading } =
-    useQuery<GetTvShows>(['shows', 'popular'], getPopularTvShows);
+    useQuery<GetTvShows>(['tvShows', 'popular'], getPopularTvShows);
   const { data: topRatedTvShows, isLoading: topRatedTvShowsLoading } =
-    useQuery<GetTvShows>(['TvShows', 'topRated'], getTopRatedTvShows);
+    useQuery<GetTvShows>(['tvShows', 'topRated'], getTopRatedTvShows);
   const params = useParams<{ id: string }>();
 
   return (
@@ -75,16 +70,25 @@ function Tv() {
             ...onTheAirTvShows,
             results: onTheAirTvShows.results.slice(1),
           }}
+          type="tv"
         />
       )}
       {!airingTodayTvShowsLoading && airingTodayTvShows && (
-        <MovieSlider title="Airing today TV shows" data={airingTodayTvShows} />
+        <MovieSlider
+          title="Airing today TV shows"
+          data={airingTodayTvShows}
+          type="tv"
+        />
       )}
       {!popularTvShowsLoading && popularTvShows && (
-        <MovieSlider title="Popular TV shows" data={popularTvShows} />
+        <MovieSlider title="Popular TV shows" data={popularTvShows} type="tv" />
       )}
       {!topRatedTvShowsLoading && topRatedTvShows && (
-        <MovieSlider title="Top rated TV shows" data={topRatedTvShows} />
+        <MovieSlider
+          title="Top rated TV shows"
+          data={topRatedTvShows}
+          type="tv"
+        />
       )}
       {params.id && <MovieModal type="tv" id={params.id} />}
     </>

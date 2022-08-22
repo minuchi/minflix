@@ -240,3 +240,17 @@ export async function getTopRatedTvShows() {
     resp.json(),
   );
 }
+
+export async function getMoviesBySearching(s: string) {
+  return fetch(
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(
+      s,
+    )}`,
+  ).then((resp) => resp.json());
+}
+
+export async function getTvShowsBySearching(s: string) {
+  return fetch(
+    `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${encodeURIComponent(s)}`,
+  ).then((resp) => resp.json());
+}

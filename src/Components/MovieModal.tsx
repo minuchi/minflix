@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { GetMovie, getMovie, GetTVShow, getTvShow } from '../api';
 import { makeImgUrl } from '../utils';
@@ -82,16 +83,30 @@ function MovieModal({ type, id }: MovieModalProps) {
       }
     },
   );
+
+  const isSearch = useMatch('/search/:id');
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get('keyword') || '';
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(type === 'movie' ? '/' : '/tv', { replace: true });
+    const url = isSearch
+      ? `/search?keyword=${encodeURIComponent(keyword)}`
+      : type === 'movie'
+      ? '/'
+      : '/tv';
+    navigate(url, { replace: true });
   };
+
   const handleModalClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     // Do not close modal when modal clicked...
     e.stopPropagation();
   };
+
+  useEffect(() => {
+    console.log(isLoading, data);
+  }, [isLoading, data]);
 
   return (
     <AnimatePresence>
@@ -104,7 +119,9 @@ function MovieModal({ type, id }: MovieModalProps) {
         <Modal layoutId={id} onClick={handleModalClick}>
           {!isLoading && data && (
             <>
-              <Img src={makeImgUrl(data.backdrop_path, 'w500')} />
+              <Img
+                src={makeImgUrl(data.backdrop_path || data.poster_path, 'w500')}
+              />
               <Title>{(data as any).title || (data as any).name}</Title>
               <Overview>{data.overview}</Overview>
               <Tags>

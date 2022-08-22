@@ -62,12 +62,19 @@ const HeightFixer = styled.div`
   width: 100%;
 `;
 
-interface MovieSliderProps {
-  title: string;
-  data: GetMovies | GetTvShows;
-}
+type MovieSliderProps =
+  | {
+      title: string;
+      data: GetMovies;
+      type: 'movie';
+    }
+  | {
+      title: string;
+      data: GetTvShows;
+      type: 'tv';
+    };
 
-function MovieSlider({ title, data }: MovieSliderProps) {
+function MovieSlider({ title, data, type }: MovieSliderProps) {
   const [page, setPage] = useState(0);
   const [isPaging, setIsPaging] = useState(false);
   const NextPage = () => {
@@ -99,9 +106,12 @@ function MovieSlider({ title, data }: MovieSliderProps) {
               .map((movie: any) => (
                 <MovieBox
                   key={movie.id}
-                  id={title.toLowerCase().replace(/\s/g, '') + '-' + movie.id}
+                  id={
+                    title.toLowerCase().replace(/(\s|")/g, '') + '-' + movie.id
+                  }
                   imageUrl={movie.backdrop_path || movie.poster_path}
-                  title={movie.title || movie.name}
+                  title={type === 'movie' ? movie.title : movie.name}
+                  type={type}
                 />
               ))}
           </Row>

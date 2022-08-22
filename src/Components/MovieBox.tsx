@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { motion, Variants } from 'framer-motion';
 import { makeImgUrl } from '../utils';
-import { Link, useMatch } from 'react-router-dom';
+import { Link, useMatch, useSearchParams } from 'react-router-dom';
 
 interface MovieBoxProps {
   id: string;
   imageUrl: string;
   title: string;
+  type: 'movie' | 'tv';
 }
 
 const Box = styled(motion.li)`
@@ -69,9 +70,13 @@ const infoVariants: Variants = {
   },
 };
 
-function MovieBox({ id, imageUrl, title }: MovieBoxProps) {
-  const isTv = useMatch('/tv');
-
+function MovieBox({ id, imageUrl, title, type }: MovieBoxProps) {
+  const isSearch = useMatch('/search');
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get('keyword') || '';
+  const url = isSearch
+    ? `/search/${id}?keyword=${encodeURIComponent(keyword)}&t=${type}`
+    : `/${type === 'movie' ? 'movies' : 'tv'}/${id}`;
   return (
     <Box
       key={id}
@@ -80,7 +85,7 @@ function MovieBox({ id, imageUrl, title }: MovieBoxProps) {
       initial="normal"
       whileHover="hover"
     >
-      <Link to={`/${isTv ? 'tv' : 'movies'}/${id}`}>
+      <Link to={url}>
         <Img src={makeImgUrl(imageUrl, 'w500')} />
         <Info variants={infoVariants}>
           <Title>{title}</Title>
