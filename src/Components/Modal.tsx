@@ -19,6 +19,7 @@ const Overlay = styled(motion.div)`
   left: 0;
   display: flex;
   justify-content: center;
+  z-index: 99;
 `;
 
 const ModalContainer = styled(motion.div)`

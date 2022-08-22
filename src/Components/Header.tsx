@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import Search from './Search';
 
@@ -13,6 +13,7 @@ const Nav = styled(motion.nav)`
   align-items: center;
   padding: 0 60px 0 50px;
   width: 100%;
+  z-index: 20;
 `;
 
 const Menu = styled.div`
@@ -50,7 +51,7 @@ const Circle = styled(motion.div)`
   background-color: ${(props) => props.theme.white.light};
 `;
 
-const PageLink = styled(NavLink)`
+const PageLink = styled(Link)`
   position: relative;
   text-align: center;
   color: ${(props) => props.theme.white.default};
@@ -82,6 +83,10 @@ const logoVariants: Variants = {
 };
 
 function Header() {
+  const isHomeActive = useMatch('/');
+  const isMovieActive = useMatch('/movies/*');
+  const isTvActive = useMatch('/tv/*');
+
   const { scrollY } = useScroll();
   const backgroundColor = useTransform(
     scrollY,
@@ -107,22 +112,18 @@ function Header() {
           <Items>
             <Item>
               <PageLink
-                className={({ isActive }) => (isActive ? 'active' : undefined)}
+                className={isHomeActive || isMovieActive ? 'active' : ''}
                 to="/"
               >
-                {({ isActive }) => (
-                  <>Home{isActive && <Circle layoutId="circle" />}</>
+                Home
+                {(isHomeActive || isMovieActive) && (
+                  <Circle layoutId="circle" />
                 )}
               </PageLink>
             </Item>
             <Item>
-              <PageLink
-                className={({ isActive }) => (isActive ? 'active' : undefined)}
-                to="/tv"
-              >
-                {({ isActive }) => (
-                  <>TV Shows{isActive && <Circle layoutId="circle" />}</>
-                )}
+              <PageLink className={isTvActive ? 'active' : ''} to="/tv">
+                TV Shows{isTvActive && <Circle layoutId="circle" />}
               </PageLink>
             </Item>
           </Items>
