@@ -53,6 +53,13 @@ function Tv() {
     useQuery<GetTvShows>(['tvShows', 'topRated'], getTopRatedTvShows);
   const params = useParams<{ id: string }>();
 
+  const modalCond =
+    !onTheAirTvShowsLoading &&
+    !airingTodayTvShowsLoading &&
+    !popularTvShowsLoading &&
+    !topRatedTvShowsLoading &&
+    params.id;
+
   return (
     <>
       <Banner
@@ -86,7 +93,7 @@ function Tv() {
       {!topRatedTvShowsLoading && topRatedTvShows && (
         <Slider title="Top rated TV shows" data={topRatedTvShows} type="tv" />
       )}
-      {params.id && <Modal type="tv" id={params.id} />}
+      {modalCond && <Modal type="tv" id={params.id} />}
     </>
   );
 }

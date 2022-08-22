@@ -107,7 +107,9 @@ function Slider({ title, data, type }: SliderProps) {
                 <Box
                   key={movie.id}
                   id={
-                    title.toLowerCase().replace(/(\s|")/g, '') + '-' + movie.id
+                    title.toLowerCase().replace(/[^a-z0-9-]/g, '') +
+                    '-' +
+                    movie.id
                   }
                   imageUrl={movie.backdrop_path || movie.poster_path}
                   title={type === 'movie' ? movie.title : movie.name}

@@ -52,6 +52,12 @@ function Home() {
     useQuery<GetMovies>(['movies', 'upcoming'], getUpcomingMovies);
   const params = useParams<{ id: string }>();
 
+  const modalCond =
+    !moviesLoading &&
+    !topRatedMoviesLoading &&
+    !upcomingMoviesLoading &&
+    params.id;
+
   return (
     <>
       <Banner imgUrl={makeImgUrl(movies?.results[0].backdrop_path || '')}>
@@ -71,7 +77,7 @@ function Home() {
       {!upcomingMoviesLoading && upcomingMovies && (
         <Slider title="Upcoming movies" data={upcomingMovies} type="movie" />
       )}
-      {params.id && <Modal type="movie" id={params.id} />}
+      {modalCond && <Modal type="movie" id={params.id} />}
     </>
   );
 }
